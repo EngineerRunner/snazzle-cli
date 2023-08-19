@@ -7,17 +7,28 @@ import sys
 import attachlib
 import keyboard
 import time
+import os
 session = None
 
+logo = '''
+ _______ __   __       ____       _____  _____  ___       _______                    __
+ |  ___| | \  | |     / __ \     |___ | |___ |  |  |      | ____|               __  |__|
+ |  |___ | |\ | |    / /__\ \       / /    / /  |  |      | |___       ______  |  |  __
+ |___  | | |\\ | |   / /----\ \     / /    / /   |  |      |  ___|      | ___|  |  | |  |
+ ___|  | | | \| |  / /      \ \   / /__  / /__  |  |_____ | |___       | |___  |  | |  |
+|______| |_|  |_| /_/        \_\ |____| |____|  |_______| |_____|      |____|  |__| |__|  '''
 
 # Functions
+clear = lambda: os.system('cls' if os.name=='nt' else 'clear')
 
 def login(relog):
     global session
+    global username
     if exists("session.txt") and not relog == True:
         print("Found saved login!")
         sessionfile = open("session.txt","r")
         details = sessionfile.read().split(",")
+        username = details[0]
         sessionfile.close()
         try:
             session = attachlib.session_login(details[0],details[1])
@@ -54,16 +65,14 @@ if len(sys.argv) > 1:
     uhh i'll do this later.
     '''
 
-print('''
- _______ __   __       ____       _____  _____  ___       _______                    __
- |  ___| | \  | |     / __ \     |___ | |___ |  |  |      | ____|               __  |__|
- |  |___ | |\ | |    / /__\ \       / /    / /  |  |      | |___       ______  |  |  __
- |___  | | |\\ | |   / /----\ \     / /    / /   |  |      |  ___|      | ___|  |  | |  |
- ___|  | | | \| |  / /      \ \   / /__  / /__  |  |_____ | |___       | |___  |  | |  |
-|______| |_|  |_| /_/        \_\ |____| |____|  |_______| |_____|      |____|  |__| |__|  ''')
+#login
+print(logo)
 
 print("Welcome to Snazzle CLI.")
 print("Attempting to log in..")
 login(relog=False)
-print(f"Welcome!")
-input()
+input(f"Welcome, {username}! Press any key to continue.")
+#main menu
+while True:
+    print(logo)
+    print("View (p)roject details, a (u)ser profile or a (f)orum post.")
