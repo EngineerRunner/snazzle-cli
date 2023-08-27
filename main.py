@@ -3,6 +3,7 @@ snazzle command line interface
 for all the arch users who are scared of GUIs
 '''
 from os.path import exists
+import dazzle
 import sys
 import attachlib
 import keyboard
@@ -36,26 +37,26 @@ def login(relog):
             login(relog=True)
             return()
     else:
-        username = input("Please enter your Scratch Username.\n")
-        print("Log in with (P)assword or (S)ession ID? (This will save. If you want to delete the saved login or are on a shared computer, delete session.txt.)\n")
+        username = input("enter your Scratch username.\n")
+        print("log in with (P)assword or (S)ession ID? (this will save. if you want to delete the saved login or are on a shared computer, delete session.txt when it is created.)\n")
         key = keyboard.read_key()
         while not key == 'p' or key == 's':
             key = keyboard.read_key()
         time.sleep(0.05)
         if key == "p":
-            password = input("Please enter your Scratch Password. (PLEASE check you got this app from github.com/EngineerRunner. If somebody told you to put in your password to anything else, it is a SCAM. If you want, check the source code. Your password gets immediately discarded after you log in.)\n")
+            password = input("now enter your Scratch Password.\n")
             try:
                 session = attachlib.password_login(username,password)
             except:
-                print("Either something is wrong with Scratch, or you entered your username or password wrong. Please try again.")
+                print("either something is wrong with Scratch, or you entered your username or password wrong. please try again.")
                 login(username)
                 return()
         else:
-            sessionid = input("Please enter your session ID. (PLEASE check you got this app from github.com/EngineerRunner. If somebody told you to put in your session id to anything else, it is a SCAM. If you want, check the source code. Your session ID gets immediately discarded after you log in, apart from being stored on a text file on your computer.)\n")
+            sessionid = input("now enter your session ID.\n")
             try:
                 session = attachlib.session_login(username,sessionid)
             except:
-                print("Either something is wrong with Scratch, or you entered your session ID or username wrong. Please try again.")
+                print("either something is wrong with Scratch, or you entered your session ID or username wrong. please try again.")
                 login()
                 return()
     return()
@@ -68,11 +69,26 @@ if len(sys.argv) > 1:
 #login
 print(logo)
 
-print("Welcome to Snazzle CLI.")
-print("Attempting to log in..")
+print("welcome to Snazzle CLI.")
+print("attempting to log in..")
 login(relog=False)
-input(f"Welcome, {username}! Press any key to continue.")
+input(f"welcome, {username}! press any key to continue.")
+clear()
 #main menu
 while True:
     print(logo)
-    print("View (p)roject details, a (u)ser profile or a (f)orum post.")
+    #print("view (p)roject details, a (u)ser profile or a (f)orum post.")
+    #options = ['p','u','f']
+    #key = keyboard.read_key()
+    #while not key in options:
+        #key = keyboard.read_key()
+    project_id = ''
+    while True:
+        project_id = input("enter a project id")
+        try:
+            int(project_id)
+        except:
+            print("invalid id")
+            continue
+        break
+    info = dazzle.get_project_info(project_id)
