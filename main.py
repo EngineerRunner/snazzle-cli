@@ -1,4 +1,4 @@
-'''
+﻿'''
 snazzle command line interface
 for all the arch users who are scared of GUIs
 '''
@@ -9,6 +9,7 @@ import attachlib
 import keyboard
 import time
 import os
+import webbrowser
 session = None
 
 logo = '''
@@ -72,10 +73,10 @@ print(logo)
 print("welcome to Snazzle CLI.")
 print("attempting to log in..")
 login(relog=False)
-input(f"welcome, {username}! press any key to continue.")
-clear()
+input(f"welcome, {username}! press enter to continue.")
 #main menu
 while True:
+    clear()
     print(logo)
     #print("view (p)roject details, a (u)ser profile or a (f)orum post.")
     #options = ['p','u','f']
@@ -84,7 +85,7 @@ while True:
         #key = keyboard.read_key()
     project_id = ''
     while True:
-        project_id = input("enter a project id")
+        project_id = input("enter a project id \n")
         try:
             int(project_id)
         except:
@@ -92,3 +93,32 @@ while True:
             continue
         break
     info = dazzle.get_project_info(project_id)
+    title = info["title"]
+    description = info["description"]
+    instructions = info["instructions"]
+    loves = info["stats"]["loves"]
+    favorites = info["stats"]["favorites"]
+    creator = info["author"]["username"]
+    clear()
+    screen = f'''
+{title} by {creator}
+{loves} ♥   {favorites} ★
+-------------------------------------------------------------    
+Description:
+{description}
+-------------------------------------------------------------    
+Instructions:
+{instructions}
+-------------------------------------------------------------    
+    '''
+    print(screen)
+    print("(o)pen project in browser or (b)ack to main menu \n")
+    options = ['b','o']
+    key = keyboard.read_key()
+    while not key in options:
+        key = keyboard.read_key()
+    if key == "b":
+        continue
+    else:
+        webbrowser.open_new(f"scratch.mit.edu/projects/{project_id}/embed")
+        input("press enter to proceed to the main menu")
